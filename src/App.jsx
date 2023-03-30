@@ -1,10 +1,16 @@
 /* eslint-disable quotes */
 import React, { useState, useRef, useEffect } from "react";
 import axios from "axios";
-import { Container, Box, Button, Typography, TextField } from "@mui/material";
+import {
+  Container,
+  Box,
+  Button,
+  Typography,
+  TextField,
+  Grid,
+} from "@mui/material";
 
 const OPENAI_API_KEY = process.env.REACT_APP_OPENAI_API_KEY;
-console.log(process.env);
 
 function initializeSpeechRecognition() {
   if (
@@ -159,7 +165,7 @@ function App() {
     <Container maxWidth="sm">
       <Box mt={4} textAlign="center">
         <Typography variant="h4" mb={4}>
-          Ask Sally the Hospitable Southern
+          React Voice Recorder & ChatGPT API
         </Typography>
         {recording ? (
           <Button
@@ -179,60 +185,70 @@ function App() {
           </Button>
         )}
         <Typography variant="h6" mt={4}>
-          Your Audio Transcript
+          Transcript
         </Typography>
-        <TextField
-          fullWidth
-          multiline
-          rows={4}
-          value={transcript}
-          margin="normal"
-          variant="outlined"
-          InputProps={{
-            readOnly: true,
-          }}
-        />
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={handleSubmit}
-          disabled={!transcript || recording}
-          mt={2}
-        >
-          Submit
-        </Button>
+        <Grid container spacing={2}>
+          <Grid item xs={12}>
+            <TextField
+              fullWidth
+              multiline
+              rows={4}
+              value={transcript}
+              margin="normal"
+              variant="outlined"
+              InputProps={{
+                readOnly: true,
+              }}
+            />
+          </Grid>
+          <Grid item xs={12}>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={handleSubmit}
+              disabled={!transcript || recording}
+              mt={2}
+            >
+              Submit
+            </Button>
+          </Grid>
+        </Grid>
         {response && (
           <>
             <Typography variant="h6" mt={4}>
-              Sally's Response
+              ChatGPT Response
             </Typography>
-            <Box display="flex" alignItems="center">
-              <TextField
-                fullWidth
-                multiline
-                rows={4}
-                value={response}
-                margin="normal"
-                variant="outlined"
-                InputProps={{
-                  readOnly: true,
-                }}
-              />
-              <Button
-                variant="contained"
-                color="primary"
-                onClick={handlePlayResponse}
-                ml={2}
-              >
-                Play
-              </Button>
-            </Box>
+            <Grid container spacing={2}>
+              <Grid item xs={12} sm={9}>
+                <TextField
+                  fullWidth
+                  multiline
+                  rows={4}
+                  value={response}
+                  margin="normal"
+                  variant="outlined"
+                  InputProps={{
+                    readOnly: true,
+                  }}
+                />
+              </Grid>
+              <Grid item xs={12} sm={3}>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={handlePlayResponse}
+                  fullWidth
+                >
+                  Play
+                </Button>
+              </Grid>
+            </Grid>
           </>
         )}
         {audioURL && (
           <>
             <Typography variant="h6" mt={4}>
-              Your Audio Sample
+              Recorded Audio
             </Typography>
             <Box mt={2}>
               <audio controls src={audioURL} />
