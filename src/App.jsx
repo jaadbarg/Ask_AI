@@ -7,8 +7,24 @@ import {
   Button,
   Typography,
   TextField,
-  Grid,
+  createTheme,
+  ThemeProvider,
 } from "@mui/material";
+import { indigo, pink } from "@mui/material/colors";
+
+const theme = createTheme({
+  palette: {
+    primary: {
+      main: indigo[500],
+    },
+    secondary: {
+      main: pink[500],
+    },
+  },
+  typography: {
+    fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
+  },
+});
 
 const OPENAI_API_KEY = process.env.REACT_APP_OPENAI_API_KEY;
 
@@ -162,33 +178,62 @@ function App() {
   // }
 
   return (
-    <Container maxWidth="sm">
-      <Box mt={4} textAlign="center">
-        <Typography variant="h4" mb={4}>
-          React Voice Recorder & ChatGPT API
-        </Typography>
-        {recording ? (
-          <Button
-            variant="contained"
-            color="secondary"
-            onClick={handleStopRecording}
-          >
-            Stop Recording
-          </Button>
-        ) : (
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={handleStartRecording}
-          >
-            Start Recording
-          </Button>
-        )}
-        <Typography variant="h6" mt={4}>
-          Transcript
-        </Typography>
-        <Grid container spacing={2}>
-          <Grid item xs={12}>
+    <ThemeProvider theme={theme}>
+      <Box
+        sx={{
+          minHeight: "100vh",
+          animation: "pulse 10s linear infinite",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <Container
+          maxWidth="sm"
+          sx={{
+            minHeight: { xs: "calc(100vh - 32px)", sm: "calc(100vh - 64px)" },
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            alignItems: "center",
+            background: "linear-gradient(135deg, #a8edea 0%, #fed6e3 100%)",
+            borderRadius: "16px",
+            mt: 2,
+            mb: 2,
+          }}
+        >
+          <Box mt={4} textAlign="center">
+            <Typography
+              variant="h4"
+              mb={4}
+              sx={{ fontWeight: "bold", color: theme.palette.primary.main }}
+            >
+              Ask Sally the Hospitable Southerner
+            </Typography>
+            {recording ? (
+              <Button
+                variant="contained"
+                color="secondary"
+                onClick={handleStopRecording}
+              >
+                Stop Recording
+              </Button>
+            ) : (
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={handleStartRecording}
+              >
+                Start Recording
+              </Button>
+            )}
+            <Typography
+              variant="h6"
+              mt={4}
+              sx={{ fontWeight: "bold", color: theme.palette.primary.main }}
+            >
+              Transcript
+            </Typography>
             <TextField
               fullWidth
               multiline
@@ -199,9 +244,8 @@ function App() {
               InputProps={{
                 readOnly: true,
               }}
+              sx={{ marginBottom: "16px" }}
             />
-          </Grid>
-          <Grid item xs={12}>
             <Button
               variant="contained"
               color="primary"
@@ -211,52 +255,62 @@ function App() {
             >
               Submit
             </Button>
-          </Grid>
-        </Grid>
-        {response && (
-          <>
-            <Typography variant="h6" mt={4}>
-              ChatGPT Response
-            </Typography>
-            <Grid container spacing={2}>
-              <Grid item xs={12} sm={9}>
-                <TextField
-                  fullWidth
-                  multiline
-                  rows={4}
-                  value={response}
-                  margin="normal"
-                  variant="outlined"
-                  InputProps={{
-                    readOnly: true,
-                  }}
-                />
-              </Grid>
-              <Grid item xs={12} sm={3}>
-                <Button
-                  variant="contained"
-                  color="primary"
-                  onClick={handlePlayResponse}
-                  fullWidth
+            {response && (
+              <>
+                <Typography
+                  variant="h6"
+                  mt={4}
+                  sx={{ fontWeight: "bold", color: theme.palette.primary.main }}
                 >
-                  Play
-                </Button>
-              </Grid>
-            </Grid>
-          </>
-        )}
-        {audioURL && (
-          <>
-            <Typography variant="h6" mt={4}>
-              Recorded Audio
-            </Typography>
-            <Box mt={2}>
-              <audio controls src={audioURL} />
-            </Box>
-          </>
-        )}
+                  Sally's Response
+                </Typography>
+                <Box
+                  display="flex"
+                  alignItems="center"
+                  flexDirection={{ xs: "column", sm: "row" }}
+                >
+                  <TextField
+                    fullWidth
+                    multiline
+                    rows={4}
+                    value={response}
+                    margin="normal"
+                    variant="outlined"
+                    InputProps={{
+                      readOnly: true,
+                    }}
+                    sx={{ marginBottom: "16px" }}
+                  />
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={handlePlayResponse}
+                    ml={{ xs: 0, sm: 2 }}
+                    mt={{ xs: 2, sm: 0 }}
+                  >
+                    Play
+                  </Button>
+                </Box>
+              </>
+            )}
+            {audioURL && (
+              <>
+                <Typography
+                  variant="h6"
+                  mt={4}
+                  sx={{ fontWeight: "bold", color: theme.palette.primary.main }}
+                >
+                  Your Question Audio
+                </Typography>
+                <Box mt={2}>
+                  <audio controls src={audioURL} />
+                </Box>
+              </>
+            )}
+          </Box>
+        </Container>
       </Box>
-    </Container>
+    </ThemeProvider>
   );
 }
 
