@@ -138,11 +138,21 @@ function App() {
     } catch (err) {
       console.error("Error making request to ChatGPT API:", err);
     }
+  };
 
-    if (response) {
+  const isInitialRender = useRef(true);
+
+  useEffect(() => {
+    if (response && !isInitialRender.current) {
       speakResponse(response);
     }
-  };
+    isInitialRender.current = false;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [response]);
+
+  // if (response) {
+  //   speakResponse(response);
+  // }
 
   return (
     <Container maxWidth="sm">
