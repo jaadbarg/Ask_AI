@@ -3,7 +3,8 @@ import React, { useState, useRef, useEffect } from "react";
 import axios from "axios";
 import { Container, Box, Button, Typography, TextField } from "@mui/material";
 
-const OPENAI_API_KEY = "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";
+const OPENAI_API_KEY = process.env.REACT_APP_OPENAI_API_KEY;
+console.log(process.env);
 
 function initializeSpeechRecognition() {
   if (
@@ -158,7 +159,7 @@ function App() {
     <Container maxWidth="sm">
       <Box mt={4} textAlign="center">
         <Typography variant="h4" mb={4}>
-          React Voice Recorder & ChatGPT API
+          Ask Sally the Hospitable Southern
         </Typography>
         {recording ? (
           <Button
@@ -178,7 +179,7 @@ function App() {
           </Button>
         )}
         <Typography variant="h6" mt={4}>
-          Transcript
+          Your Audio Transcript
         </Typography>
         <TextField
           fullWidth
@@ -203,7 +204,7 @@ function App() {
         {response && (
           <>
             <Typography variant="h6" mt={4}>
-              ChatGPT Response
+              Sally's Response
             </Typography>
             <Box display="flex" alignItems="center">
               <TextField
@@ -231,7 +232,7 @@ function App() {
         {audioURL && (
           <>
             <Typography variant="h6" mt={4}>
-              Recorded Audio
+              Your Audio Sample
             </Typography>
             <Box mt={2}>
               <audio controls src={audioURL} />
